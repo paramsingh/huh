@@ -32,7 +32,8 @@ or open a GitHub issue (https://github.com/paramsingh/huh).
 def solve():
     openai.api_key = keyring.get_password('huh', 'openai_key')
     if not openai.api_key:
-        click.echo("Please run 'huh setup' first.")
+        click.echo(
+            "Could not find an OpenAI API key. Please run 'huh setup' first.")
         return
     command = click.prompt("Enter the command you ran")
 

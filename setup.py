@@ -14,7 +14,7 @@ def read(fname):
 
 setup(
     name="huh",
-    version="0.0.1",
+    version="0.0.2",
     author="Param Singh",
     author_email="me@param.codes",
     description="A tool to help you understand error messages.",
