@@ -4,6 +4,7 @@ import click
 import keyring
 import openai
 import subprocess
+import textwrap
 from yaspin import yaspin
 from click_default_group import DefaultGroup
 
@@ -52,7 +53,7 @@ def solve():
     prompt = f"""
 Explain in plain English what the following command line error means, and how to fix it.
 If there is a command that you can run to fix the error, please include that command in your answer.
-If the command itself was incorrect, please include the correct command in your answer.
+If the command itself was incorrect, please include the correct command in your answer. Try to be succinct but still clear.
 Command: {command}
 Error: {err}"""
     with yaspin(text="Thinking...", color="yellow"):
@@ -66,7 +67,8 @@ Error: {err}"""
             presence_penalty=0.6,
         )
     click.echo()
-    click.echo(answer.choices[0].text.strip())
+    click.echo('\n'.join(textwrap.wrap(
+        answer.choices[0].text.strip(), width=80)))
 
 
 if __name__ == '__main__':
