@@ -16,11 +16,16 @@ def cli():
 
 @cli.command()
 def setup():
+    click.echo(
+        """
+Before we begin, please note that this program is in alpha and
+may not work as expected. If you run into any issues, please
+come talk to me on Twitter @iliekcomputers,
+or open a GitHub issue (https://github.com/paramsingh/huh).
+    """)
     openai_key = click.prompt('Enter your OpenAI API key')
     keyring.set_password('huh', 'openai_key', openai_key)
     click.echo("Setup complete!")
-    click.echo(
-        "Before we begin, please note that this program is in alpha and may not work as expected.")
 
 
 @cli.command()
@@ -48,7 +53,10 @@ def solve():
         click.echo("Command did not error for me. Exiting...")
         return
 
-    click.echo(f'Command ran! The error was "{err}"')
+    click.echo(f'Command ran! Got an error.')
+    click.echo("=====================")
+    click.echo(err)
+    click.echo("=====================")
 
     prompt = f"""
 Explain in plain English what the following command line error means, and how to fix it.
@@ -61,7 +69,7 @@ Error: {err}"""
             engine="text-davinci-003",
             prompt=prompt,
             temperature=0.9,
-            max_tokens=100,
+            max_tokens=150,
             top_p=1,
             frequency_penalty=0,
             presence_penalty=0.6,
