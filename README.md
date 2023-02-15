@@ -13,13 +13,13 @@ pip install huh@git+https://github.com/paramsingh/huh.git@v0.0.2
 ```
 
 You'll need to provide an OpenAI API key. Here are the [instructions](https://help.openai.com/en/articles/4936850-where-do-i-find-my-secret-api-key) on how to get one.
-Add one to your keyring via `hub setup`.
+Add one to your keyring via `huh setup`.
 
 Note: All code on hub runs locally on your computer. The API key is stored in your OS's keyring.
 
 ## How to use?
 
-Just run `hub` and enter your command.
+Just run `huh` and enter your command.
 
 ## Feature requests/bugs/feedback
 
