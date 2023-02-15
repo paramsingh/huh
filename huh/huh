@@ -5,9 +5,10 @@ import keyring
 import openai
 import subprocess
 from yaspin import yaspin
+from click_default_group import DefaultGroup
 
 
-@click.group()
+@click.group(cls=DefaultGroup, default='solve', default_if_no_args=True)
 def cli():
     pass
 

@@ -29,6 +29,7 @@ setup(
         'keyring',
         'openai',
         'yaspin',
+        'click-default-group',
     ],
     classifiers=[
         "Development Status :: 3 - Alpha",
