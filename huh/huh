@@ -34,7 +34,7 @@ def solve():
     if not openai.api_key:
         click.echo("Please run 'huh setup' first.")
         return
-    command = click.prompt("enter the command you ran:")
+    command = click.prompt("Enter the command you ran")
 
     run_comand = click.prompt(
         "I need to run the command to get the error, is that okay? (y/N)", default="N", confirmation_prompt=True)
@@ -42,7 +42,7 @@ def solve():
         click.echo("No harm done. Exiting...")
         return
 
-    click.echo("okay, running the command...")
+    click.echo("Okay, running the command...")
     result = subprocess.run(
         list(command.split()),
         capture_output=True,
