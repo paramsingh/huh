@@ -1,0 +1,72 @@
+#!/usr/bin/env python3
+
+import click
+import keyring
+import openai
+import subprocess
+from yaspin import yaspin
+
+
+@click.group()
+def cli():
+    pass
+
+
+@cli.command()
+def setup():
+    openai_key = click.prompt('Enter your OpenAI API key')
+    keyring.set_password('huh', 'openai_key', openai_key)
+    click.echo("Setup complete!")
+    click.echo(
+        "Before we begin, please note that this program is in alpha and may not work as expected.")
+
+
+@cli.command()
+def solve():
+    openai.api_key = keyring.get_password('huh', 'openai_key')
+    if not openai.api_key:
+        click.echo("Please run 'huh setup' first.")
+        return
+    command = click.prompt("enter the command you ran:")
+
+    run_comand = click.prompt(
+        "I need to run the command to get the error, is that okay? (y/N)", default="N", confirmation_prompt=True)
+    if run_comand.lower() != "y":
+        click.echo("No harm done. Exiting...")
+        return
+
+    click.echo("okay, running the command...")
+    result = subprocess.run(
+        list(command.split()),
+        capture_output=True,
+        text=True,
+    )
+    err = result.stderr.strip()
+    if not err:
+        click.echo("Command did not error for me. Exiting...")
+        return
+
+    click.echo(f'Command ran! The error was "{err}"')
+
+    prompt = f"""
+Explain in plain English what the following command line error means, and how to fix it.
+If there is a command that you can run to fix the error, please include that command in your answer.
+If the command itself was incorrect, please include the correct command in your answer.
+Command: {command}
+Error: {err}"""
+    with yaspin(text="Thinking...", color="yellow"):
+        answer = openai.Completion.create(
+            engine="text-davinci-003",
+            prompt=prompt,
+            temperature=0.9,
+            max_tokens=100,
+            top_p=1,
+            frequency_penalty=0,
+            presence_penalty=0.6,
+        )
+    click.echo()
+    click.echo(answer.choices[0].text.strip())
+
+
+if __name__ == '__main__':
+    cli()
